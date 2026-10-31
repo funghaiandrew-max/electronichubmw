@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElectroHub Malawi — Phones, Laptops, Audio & Gaming in Lilongwe</title>
+<meta name="description" content="ElectroHub Malawi - Best electronics shop in Lilongwe, Area 47. iPhones, Samsung, Laptops HP Dell, Sony Audio, PS5 Gaming. Airtel Money & TNM Mpamba. 2hrs delivery.">
+<link rel="canonical" href="https://electrohub.mw/">
+<meta name="theme-color" content="#0A8A4B">
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+<style>
+:root{--green:#0A8A4B;--bg:#F6F7F9;--card:#FFFFFF;--border:#EEF1F4;--text:#121A26;--muted:#8A94A6}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
+a{text-decoration:none;color:inherit} button{cursor:pointer;font-family:inherit;border:none;background:none;touch-action:manipulation}
+.tap{transition:transform .15s,opacity .15s} .tap:active{transform:scale(.96)}
+.m-top{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.m-top .left{display:flex;gap:8px;align-items:center}
+.m-top .avatar{width:34px;height:34px;border-radius:50%;background:var(--text);color:#fff;display:grid;place-items:center;font-weight:800;font-size:11px;flex-shrink:0}
+.m-top .loc{font-size:12px;font-weight:700;line-height:1.1} .m-top .sub{font-size:10px;color:var(--muted);margin-top:2px}
+.d-nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 5%;gap:20px}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.3px;flex-shrink:0} .logo span{color:var(--green)}
+.d-links{display:flex;gap:8px;align-items:center} .d-links a{font-size:13px;font-weight:600;color:var(--muted);padding:8px 14px;border-radius:20px} .d-links a.active{background:var(--text);color:#fff}
+.d-search{flex:1;max-width:380px;height:40px;background:var(--bg);border:1px solid var(--border);border-radius:20px;display:flex;align-items:center;padding:0 14px;gap:10px}
+.d-search input{flex:1;border:none;outline:none;font-size:13px;font-weight:500;background:transparent}
+.wrap{flex:1;max-width:1280px;width:100%;margin:0 auto;padding:0 14px 20px;display:flex;flex-direction:column}
+.m-col{max-width:480px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column}
+.search{height:44px;background:#fff;border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;padding:0 14px;gap:10px;width:100%}
+.search input{flex:1;border:none;outline:none;font-size:13px;font-weight:500;background:transparent}
+.search:focus-within{border-color:var(--green);box-shadow:0 0 0 3px #E8F5E9}
+.banner{margin-top:12px;background:linear-gradient(100deg,#F3F0E8,#E8F5E9);border:1px solid var(--border);border-radius:20px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.banner h2{font-size:18px;font-weight:800} .banner h2 span{color:var(--green)}
+.banner button{margin-top:8px;height:30px;padding:0 14px;border-radius:20px;background:var(--green);color:#fff;font-weight:700;font-size:11px}
+.cats{margin-top:14px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:100%}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px}
+.cat .ic{width:52px;height:52px;border-radius:16px;background:#fff;border:1px solid var(--border);display:grid;place-items:center;position:relative}
+.cat b{font-size:9px;font-weight:600;text-align:center}
+.cat.active .ic{border-color:var(--green);background:#E8F5E9} .cat.active b{color:var(--green)}
+.sec{margin-top:18px;width:100%} .sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px} .sec-head h3{font-size:13px;font-weight:800} .sec-head a{font-size:11px;font-weight:700;color:var(--green)}
+.stores{display:flex;gap:10px;overflow-x:auto;padding-bottom:2px} .stores::-webkit-scrollbar{display:none} .store{min-width:58px;text-align:center} .logo-box{width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid var(--border);display:grid;place-items:center;font-size:9px;font-weight:800}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:10px;position:relative;display:flex;flex-direction:column}
+.card img{width:100%;height:90px;object-fit:contain} .card .price{font-size:12px;font-weight:800;margin-top:6px} .card .name{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.3;height:26px;overflow:hidden}
+.card .stock{font-size:10px;margin-top:3px} .card .stock.ok{color:var(--green)} .card .stock.low{color:#EF4444}
+.add{position:absolute;right:8px;bottom:8px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center}
+.m-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:40;display:grid;grid-template-columns:repeat(5,1fr);width:100%}
+.m-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:600;color:var(--muted);padding:4px} .m-nav a.active{color:var(--green)}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:600;z-index:99;display:none;white-space:nowrap}
+.skeleton{height:150px;background:linear-gradient(90deg,#EEF1F4 25%,#F6F7F9 50%,#EEF1F4 75%);background-size:200% 100%;animation:shim 1.2s infinite;border-radius:18px}
+@keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.footer{margin-top:auto;width:100vw;margin-left:calc(-50vw + 50%);background:#fff;border-top:1px solid var(--border);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted)}
+.footer a{color:var(--text);font-weight:600;text-decoration:none} .footer a.powered{color:var(--green);font-weight:800} .footer-links{display:flex;gap:16px;align-items:center}
+@media(max-width:1000px){.d-nav{display:none} .footer{display:none!important} .wrap{padding-bottom:90px} .m-top{display:flex}}
+@media(min-width:1001px){.m-top{display:none!important} .m-col{max-width:100%} .grid{grid-template-columns:repeat(5,1fr)} .m-nav{display:none!important} .cats{grid-template-columns:repeat(8,1fr)} .banner{padding:20px 26px} .banner h2{font-size:24px} .banner img{width:140px!important;height:100px!important}}
+</style>
+</head>
+<body>
+
+<nav class="d-nav">
+  <div class="logo">Electro<span>Hub</span> .MW</div>
+  <div class="d-links"><a class="active" href="index.html">Home</a><a href="shop.html">Shop</a><a href="categories.html">Categories</a><a href="track.html">Track</a><a href="profile.html">Profile</a></div>
+  <div class="d-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A94A6" stroke-width="1.8"><circle cx="11" cy="11" r="5"/><path d="m15.5 15.5-2.5-2.5" stroke-linecap="round"/></svg><input id="desktopSearch" placeholder="Search iPhone, HP, Sony..."></div>
+</nav>
+
+<div class="m-top">
+  <div class="left"><div class="avatar">EH</div><div><div class="loc">Lilongwe, Area 47 ▾</div><div class="sub">ElectroHub • <span style="color:var(--green)">Open</span> • 2hrs delivery</div></div></div>
+  <button onclick="location.href='cart.html'" style="width:34px;height:34px;border-radius:50%;background:var(--bg);display:grid;place-items:center;border:1px solid var(--border)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6h15l-1.5 9h-13z" fill="#121A26" opacity=".08" stroke="#121A26" stroke-width="1.2"/><circle cx="9" cy="20" r="1.2" fill="#121A26"/><circle cx="18" cy="20" r="1.2" fill="#121A26"/></svg></button>
+</div>
+
+<div class="wrap">
+<div class="m-col">
+  <div style="margin-top:12px" class="search tap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A94A6" stroke-width="1.6"><circle cx="11" cy="11" r="5"/><path d="m16 16-2.5-2.5" stroke-linecap="round"/></svg><input id="searchInput" placeholder="Search electronics..."><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A94A6" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round"/></svg></div>
+
+  <div class="banner tap" onclick="location.href='shop.html'">
+    <div><div style="font-size:10px;font-weight:700;color:var(--muted)">New Arrivals • Lilongwe</div><h2>Best Deals <span>Today</span></h2><div style="font-size:10px;color:var(--muted)" id="bannerDate"></div><button class="tap">Shop Now</button></div>
+    <div style="width:80px;height:80px;border-radius:16px;background:#fff;border:1px solid var(--border);display:grid;place-items:center"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="3" fill="#0A8A4B" opacity=".12" stroke="#0A8A4B" stroke-width="1.2"/><rect x="8" y="4" width="8" height="12" rx="1" fill="#fff" stroke="#0A8A4B" stroke-width="1"/><circle cx="12" cy="18.5" r="1" fill="#0A8A4B"/></svg></div>
+  </div>
+
+  <div class="cats" id="cats"></div>
+  <div class="sec"><div class="sec-head"><h3>Top Brands</h3><a href="shop.html">View all</a></div><div class="stores" id="brands"></div></div>
+  <div class="sec"><div class="sec-head"><h3>Live Stock — Lilongwe</h3><a href="shop.html">View all</a></div><div class="grid" id="productGrid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div></div>
+</div>
+
+<footer class="footer">
+  <div>Powered by <a class="powered" href="https://lostloyalty.tech" target="_blank">lostloyaltytech</a></div>
+  <div class="footer-links"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><span>© 2026 ElectroHub</span></div>
+</footer>
+</div>
+
+<div class="m-nav">
+  <a class="active tap" href="index.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</a>
+  <a href="shop.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Shop</a>
+  <a href="categories.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="5"/><path d="m21 21-3.5-3.5" stroke-linecap="round"/></svg>Categories</a>
+  <a href="track.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Track</a>
+  <a href="profile.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M20 20a8 8 0 1 0-16 0" stroke-linecap="round"/></svg>Profile</a>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+const APPWRITE_ENDPOINT="https://fra.cloud.appwrite.io/v1";
+const APPWRITE_PROJECT="electrohub";
+const DB_ID="electronic_db";
+const COL_PRODUCTS="products";
+const client=new Appwrite.Client().setEndpoint(APPWRITE_ENDPOINT).setProject(APPWRITE_PROJECT);
+let allProducts=[]; let activeCat="All";
+document.getElementById('bannerDate').textContent=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+function showToast(m){const t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2500)}
+
+const catStyles={
+  All:{bg:'#F6F7F9',icon:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" fill="#0A8A4B" opacity=".2" stroke="#0A8A4B" stroke-width="1.2"/><rect x="14" y="3" width="7" height="7" rx="2" fill="#0A8A4B" opacity=".2" stroke="#0A8A4B" stroke-width="1.2"/><rect x="3" y="14" width="7" height="7" rx="2" fill="#0A8A4B" opacity=".2" stroke="#0A8A4B" stroke-width="1.2"/><rect x="14" y="14" width="7" height="7" rx="2" fill="#121A26" opacity=".15" stroke="#121A26" stroke-width="1.2"/></svg>`},
+  Phones:{bg:'#E8F5E9',icon:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="6" y="2" width="12" height="20" rx="3" fill="#0A8A4B" opacity=".15"/><rect x="8" y="4" width="8" height="12" rx="1" fill="#fff" stroke="#0A8A4B" stroke-width="1.2"/><circle cx="12" cy="18.5" r="1" fill="#0A8A4B"/></svg>`},
+  Laptops:{bg:'#EEF0FF',icon:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="11" rx="2" fill="#6366F1" opacity=".15" stroke="#6366F1" stroke-width="1.2"/><path d="M2 18h20l-1 2H3l-1-2z" fill="#6366F1"/></svg>`},
+  Audio:{bg:'#FFF4E6',icon:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 12c0-5 4-9 9-9s9 4 9 9" stroke="#FF8A00" stroke-width="1.4" stroke-linecap="round"/><rect x="3" y="12" width="4" height="6" rx="2" fill="#FF8A00" opacity=".2" stroke="#FF8A00" stroke-width="1.2"/><rect x="17" y="12" width="4" height="6" rx="2" fill="#FF8A00" opacity=".2" stroke="#FF8A00" stroke-width="1.2"/></svg>`},
+  Gaming:{bg:'#FFE6F0',icon:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="10" rx="5" fill="#E91E63" opacity=".15" stroke="#E91E63" stroke-width="1.2"/><circle cx="8" cy="12" r="1" fill="#E91E63"/><circle cx="16" cy="12" r="1" fill="#E91E63"/></svg>`},
+  Accessories:{bg:'#E6F7FF',icon:`<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M9 3L7 7h10l-2-4H9z" fill="#0EA5E9" opacity=".2" stroke="#0EA5E9" stroke-width="1.2"/><rect x="7" y="7" width="10" height="11" rx="2" fill="#fff" stroke="#0EA5E9" stroke-width="1.2"/></svg>`},
+}
+
+async function fetchProducts(){
+  try{
+    let res;
+    try{ const tables=new Appwrite.TablesDB(client); res=await tables.listRows(DB_ID,COL_PRODUCTS,[Appwrite.Query.limit(40),Appwrite.Query.orderDesc('$createdAt')]); }
+    catch{ const db=new Appwrite.Databases(client); res=await db.listDocuments(DB_ID,COL_PRODUCTS,[Appwrite.Query.limit(40),Appwrite.Query.orderDesc('$createdAt')]); }
+    allProducts=res.rows||res.documents||[]; 
+    if(!allProducts.length){ document.getElementById('productGrid').innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--muted);font-size:12px">No products in Appwrite yet. Post from Admin.</div>`; renderCats(); return; }
+    renderProducts(allProducts); renderCats();
+  }catch(e){
+    document.getElementById('productGrid').innerHTML=`<div style="grid-column:1/-1;padding:16px;background:#fff;border:1px solid #FECACA;border-radius:12px;font-size:12px;color:#EF4444">Appwrite Error: ${e.message}<br>Check DB ID exists in project ${APPWRITE_PROJECT} fra region.</div>`;
+    console.error(e);
+  }
+}
+function renderCats(){
+  const uniqueCats=["All",...new Set(allProducts.map(p=>p.category).filter(Boolean))];
+  const cats=uniqueCats.length>1?uniqueCats:["All","Phones","Laptops","Audio","Gaming","Accessories"];
+  document.getElementById('cats').innerHTML=cats.slice(0,8).map(c=>{
+    const s=catStyles[c]||catStyles['All'];
+    return `<div class="cat tap ${activeCat===c?'active':''}" onclick="filterCat('${c}')"><div class="ic" style="background:${s.bg}">${s.icon}</div><b>${c}</b></div>`
+  }).join('');
+  const brands=[...new Set(allProducts.map(p=>p.brand).filter(Boolean))];
+  const fallback=brands.length?brands:["SAMSUNG","APPLE","HP","DELL","SONY","JBL"];
+  document.getElementById('brands').innerHTML=fallback.map(b=>`<div class="store tap" onclick="searchBrand('${b}')"><div class="logo-box">${b.slice(0,5)}</div><span style="font-size:9px">${b}</span></div>`).join('');
+}
+function renderProducts(list){
+  document.getElementById('productGrid').innerHTML=list.map(p=>{
+    const stock=p.stock??0;
+    return `<div class="card tap" onclick="location.href='product.html?id=${p.$id}'">
+      <img src="${p.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300'">
+      <div class="price">MK ${Number(p.price).toLocaleString()}</div>
+      <div class="name">${p.name}</div>
+      <div class="stock ${stock<5?'low':'ok'}">${stock<5?`Only ${stock} left`:`${stock} in stock`}</div>
+      <div class="add" onclick="event.stopPropagation();addToCart('${p.$id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg></div>
+    </div>`
+  }).join('');
+}
+function filterCat(cat){activeCat=cat; renderCats(); if(cat==="All") renderProducts(allProducts); else renderProducts(allProducts.filter(p=>p.category===cat));}
+function searchBrand(b){document.getElementById('searchInput').value=b; document.getElementById('desktopSearch').value=b; doSearch(b)}
+function doSearch(q){q=q.toLowerCase(); renderProducts(allProducts.filter(p=>`${p.name} ${p.category} ${p.brand}`.toLowerCase().includes(q)))}
+document.getElementById('searchInput').addEventListener('input',e=>{document.getElementById('desktopSearch').value=e.target.value; doSearch(e.target.value)});
+document.getElementById('desktopSearch').addEventListener('input',e=>{document.getElementById('searchInput').value=e.target.value; doSearch(e.target.value)});
+function addToCart(id){let c=JSON.parse(localStorage.getItem('eh_cart')||'[]'); c.push(id); localStorage.setItem('eh_cart',JSON.stringify(c)); showToast('Added to cart')}
+fetchProducts();
+</script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Admin Dashboard — ElectroHub Malawi</title>
+<meta name="theme-color" content="#0A8A4B">
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+<style>
+:root{--green:#0A8A4B;--bg:#F6F7F9;--card:#fff;--border:#EEF1F4;--text:#121A26;--muted:#8A94A6}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent} html,body{height:100%;width:100%;overflow-x:hidden} body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
+button,input,select,textarea{font-family:inherit} button{border:none;background:none;cursor:pointer;touch-action:manipulation}
+.tap{transition:transform .15s,opacity .15s} .tap:active{transform:scale(.97)}
+.top{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 5%;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.3px} .logo span{color:var(--green)}
+.nav-tabs{display:flex;gap:8px;overflow-x:auto;white-space:nowrap;padding:10px 5%;background:#fff;border-bottom:1px solid var(--border)}
+.nav-tabs::-webkit-scrollbar{display:none}
+.tab{height:36px;padding:0 16px;border-radius:20px;font-size:12px;font-weight:700;background:var(--bg);border:1px solid var(--border);color:var(--muted);flex-shrink:0;display:inline-flex;align-items:center;gap:6px}
+.tab.active{background:var(--text);color:#fff;border-color:var(--text)}
+.wrap{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:14px 14px 20px;display:flex;flex-direction:column}
+.card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:14px;margin-top:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.input{width:100%;height:44px;border:1px solid var(--border);border-radius:12px;padding:0 12px;margin-top:8px;font-size:13px;background:#fff}
+.input:focus{border-color:var(--green);outline:none;box-shadow:0 0 0 3px #E8F5E9}
+textarea.input{height:80px;padding:10px 12px;resize:none}
+.btn{height:44px;border-radius:12px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px}
+.btn.green{background:var(--green);color:#fff} .btn.dark{background:var(--text);color:#fff} .btn.white{background:#fff;border:1px solid var(--border)}
+.badge{display:inline-flex;height:24px;padding:0 10px;border-radius:20px;background:#E8F5E9;color:var(--green);font-size:11px;font-weight:700;align-items:center}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:600;z-index:99;display:none;white-space:nowrap}
+.footer{margin-top:auto;width:100vw;margin-left:calc(-50vw + 50%);background:#fff;border-top:1px solid var(--border);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted)}
+.footer a{color:var(--text);font-weight:600;text-decoration:none} .footer a.powered{color:var(--green);font-weight:800} .footer-links{display:flex;gap:16px;align-items:center}
+@media(max-width:700px){.grid4{grid-template-columns:1fr 1fr} .footer{display:none!important} .wrap{padding-bottom:20px}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div style="display:flex;align-items:center;gap:10px"><div class="logo">Electro<span>Hub</span> .MW</div><span class="badge">Admin</span></div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div style="font-size:11px;color:var(--muted)" id="adminEmail">funghaiandrew@gmail.com</div>
+    <button onclick="logout()" class="tap" style="height:34px;padding:0 14px;border-radius:20px;background:var(--text);color:#fff;font-size:11px;font-weight:700">Logout</button>
+  </div>
+</div>
+
+<div class="nav-tabs" id="tabs">
+  <button class="tab active tap" data-tab="home" onclick="switchTab('home')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Home</button>
+  <button class="tab tap" data-tab="post" onclick="switchTab('post')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Post</button>
+  <button class="tab tap" data-tab="stock" onclick="switchTab('stock')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Stock</button>
+  <button class="tab tap" data-tab="orders" onclick="switchTab('orders')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg> Orders</button>
+  <button class="tab tap" data-tab="settings" onclick="switchTab('settings')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 9 15a1.65 1.65 0 0 0-1-1.51V13a2 2 0 0 1 4 0v.49c.38.23.77.44 1.18.61"/></svg> Settings</button>
+</div>
+
+<div class="wrap">
+  <div id="tab-home">
+    <div class="grid4">
+      <div class="card" style="margin:0"><div style="font-size:11px;color:var(--muted)">Products</div><div style="font-size:20px;font-weight:800" id="statP">0</div><div style="font-size:11px;color:var(--green);margin-top:4px">Live on Shop</div></div>
+      <div class="card" style="margin:0"><div style="font-size:11px;color:var(--muted)">Orders</div><div style="font-size:20px;font-weight:800" id="statO">0</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Pending • Delivered</div></div>
+      <div class="card" style="margin:0"><div style="font-size:11px;color:var(--muted)">Revenue</div><div style="font-size:20px;font-weight:800" id="statR">MK 0</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Today</div></div>
+      <div class="card" style="margin:0"><div style="font-size:11px;color:var(--muted)">Low Stock</div><div style="font-size:20px;font-weight:800;color:#EF4444" id="statLow">0</div><div style="font-size:11px;color:var(--muted);margin-top:4px"><5 items</div></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between"><h4 style="font-size:13px;font-weight:800">Recent Orders</h4><button onclick="switchTab('orders')" style="font-size:11px;color:var(--green);font-weight:700">View all →</button></div>
+      <div id="recentOrders" style="margin-top:10px;display:grid;gap:8px"></div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:13px;font-weight:800">Quick Actions</h4>
+      <div class="grid2" style="margin-top:10px">
+        <button onclick="switchTab('post')" class="btn green tap">Post Product</button>
+        <button onclick="switchTab('stock')" class="btn white tap">Manage Stock</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-post" style="display:none">
+    <div class="card">
+      <h4 style="font-size:14px;font-weight:800">Post New Product — Appears instantly on Home/Shop</h4>
+      <input id="pName" class="input" placeholder="Product name e.g. iPhone 14 Pro Max 256GB">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <input id="pPrice" class="input" type="number" placeholder="Price MK e.g. 1200000">
+        <input id="pOldPrice" class="input" type="number" placeholder="Old price (optional)">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <select id="pCat" class="input"><option>Phones</option><option>Laptops</option><option>Audio</option><option>Gaming</option><option>Accessories</option><option>Other</option></select>
+        <select id="pBrand" class="input"><option>Apple</option><option>Samsung</option><option>HP</option><option>Dell</option><option>Sony</option><option>JBL</option><option>Generic</option></select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <input id="pStock" class="input" type="number" placeholder="Stock qty e.g. 10">
+        <input id="pImage" class="input" placeholder="Image URL">
+      </div>
+      <input id="pImageFile" class="input" type="file" accept="image/*">
+      <textarea id="pDesc" class="input" placeholder="Description..."></textarea>
+      <button onclick="postProduct()" id="postBtn" class="btn green tap">Post to Appwrite • Live now</button>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted)">Endpoint: fra.cloud.appwrite.io/v1 • Project: electrohub • Bucket: product_images</div>
+    </div>
+  </div>
+
+  <div id="tab-stock" style="display:none">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h4 style="font-size:13px;font-weight:800">Stock (<span id="stockCount">0</span>)</h4><input id="stockSearch" class="input" style="width:160px;margin:0;height:34px" placeholder="Search..." oninput="loadStock()"></div>
+      <div id="stockList" style="margin-top:10px;display:grid;gap:8px"></div>
+    </div>
+  </div>
+
+  <div id="tab-orders" style="display:none">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between"><h4 style="font-size:13px;font-weight:800">Orders — Update Tracking Status</h4><button onclick="loadOrders()" style="font-size:11px;color:var(--green);font-weight:700">Refresh</button></div>
+      <div id="ordersList" style="margin-top:10px;display:grid;gap:8px"></div>
+    </div>
+  </div>
+
+  <div id="tab-settings" style="display:none">
+    <div class="card">
+      <h4 style="font-size:13px;font-weight:800">Settings</h4>
+      <div style="margin-top:12px;font-size:12px"><b>Admin Email</b><br><span style="color:var(--muted)" id="setEmail">funghaiandrew@gmail.com</span></div>
+      <input id="setAirtel" class="input" placeholder="Airtel Money number"><input id="setTnm" class="input" placeholder="TNM Mpamba"><input id="setDelivery" class="input" type="number" placeholder="Delivery fee MK e.g. 5000"><input id="setWa" class="input" placeholder="WhatsApp number e.g. 265988226320">
+      <button onclick="saveSettings()" class="btn green tap">Save Settings</button>
+      <div style="margin-top:10px;display:grid;gap:8px">
+        <button onclick="logout()" class="btn dark tap">Logout from Admin</button>
+        <button onclick="location.href='profile.html'" class="btn white tap">Go to Customer Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div>Powered by <a class="powered" href="https://lostloyalty.tech" target="_blank">lostloyaltytech</a></div>
+    <div class="footer-links"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><span>© 2026 ElectroHub</span></div>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+// FIXED CONFIG
+const APPWRITE_ENDPOINT="https://fra.cloud.appwrite.io/v1";
+const APPWRITE_PROJECT="electrohub";
+const DB_ID="electronic_db";
+const COL_PRODUCTS="products";
+const COL_ORDERS="orders";
+const BUCKET_ID="product_image";
+const client=new Appwrite.Client().setEndpoint(APPWRITE_ENDPOINT).setProject(APPWRITE_PROJECT);
+const account=new Appwrite.Account(client);
+const databases=client.tablesDB ? new Appwrite.TablesDB(client) : new Appwrite.Databases(client);
+const storage=new Appwrite.Storage(client);
+function showToast(m){const t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2500)}
+async function guard(){
+  try{const u=await account.get(); document.getElementById('adminEmail').textContent=u.email; document.getElementById('setEmail').textContent=u.email; return u}
+  catch{
+    const local=localStorage.getItem('eh_admin');
+    if(local){const u=JSON.parse(local); document.getElementById('adminEmail').textContent=u.email; document.getElementById('setEmail').textContent=u.email; return u}
+    location.href='admin.html'; return null
+  }
+}
+function switchTab(name){
+  document.querySelectorAll('[id^="tab-"]').forEach(el=>el.style.display='none');
+  document.getElementById('tab-'+name).style.display='block';
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[data-tab="${name}"]`).classList.add('active');
+  if(name==='stock') loadStock();
+  if(name==='orders') loadOrders();
+  if(name==='home') loadHome();
+}
+async function loadHome(){
+  try{
+    let prod; if(databases.listRows) prod=await databases.listRows(DB_ID,COL_PRODUCTS,[Appwrite.Query.limit(100)]);
+    else prod=await databases.listDocuments(DB_ID,COL_PRODUCTS,[Appwrite.Query.limit(100)]);
+    const docs=prod.rows||prod.documents||[]; document.getElementById('statP').textContent=prod.total||docs.length;
+    document.getElementById('statLow').textContent=docs.filter(d=>Number(d.stock||0)<5).length;
+    let ord; if(databases.listRows) ord=await databases.listRows(DB_ID,COL_ORDERS,[Appwrite.Query.limit(100),Appwrite.Query.orderDesc('$createdAt')]);
+    else ord=await databases.listDocuments(DB_ID,COL_ORDERS,[Appwrite.Query.limit(100),Appwrite.Query.orderDesc('$createdAt')]);
+    const odocs=ord.rows||ord.documents||[]; document.getElementById('statO').textContent=ord.total||odocs.length;
+    const rev=odocs.reduce((s,o)=>s+Number(o.total||0),0); document.getElementById('statR').textContent='MK '+rev.toLocaleString();
+    document.getElementById('recentOrders').innerHTML=odocs.slice(0,5).map(o=>`<div style="display:flex;justify-content:space-between;background:var(--bg);padding:10px;border-radius:12px;font-size:11px"><span><b>${o.orderId}</b> • ${o.customerName||''} • ${o.status}</span><span style="font-weight:700">MK ${Number(o.total||0).toLocaleString()}</span></div>`).join('')||`<div style="font-size:11px;color:var(--muted)">No orders yet</div>`;
+  }catch(e){ console.log(e); }
+}
+async function postProduct(){
+  const name=document.getElementById('pName').value.trim(); const price=Number(document.getElementById('pPrice').value); const oldPrice=Number(document.getElementById('pOldPrice').value)||price;
+  const category=document.getElementById('pCat').value; const brand=document.getElementById('pBrand').value; const stock=Number(document.getElementById('pStock').value)||10;
+  let image=document.getElementById('pImage').value.trim(); const desc=document.getElementById('pDesc').value.trim(); const file=document.getElementById('pImageFile').files[0];
+  if(!name||!price){showToast('Enter name & price'); return}
+  const btn=document.getElementById('postBtn'); btn.textContent='Posting...'; btn.disabled=true;
+  try{
+    if(file){ const uploaded=await storage.createFile(BUCKET_ID, Appwrite.ID.unique(), file); const view=storage.getFileView(BUCKET_ID, uploaded.$id); image=view.href || view; }
+    const data={ name, price, oldPrice, category, brand, stock, image: image||'https://via.placeholder.com/400', description: desc, createdAt:new Date().toISOString() };
+    if(databases.createRow) await databases.createRow(DB_ID, COL_PRODUCTS, Appwrite.ID.unique(), data);
+    else await databases.createDocument(DB_ID, COL_PRODUCTS, Appwrite.ID.unique(), data);
+    showToast('✅ Product posted — live on Shop/Home'); document.getElementById('pName').value=''; document.getElementById('pPrice').value=''; document.getElementById('pImage').value=''; document.getElementById('pDesc').value=''; loadHome();
+  }catch(e){ showToast('Error: '+e.message); console.error(e); }
+  finally{ btn.textContent='Post to Appwrite • Live now'; btn.disabled=false }
+}
+let allStock=[];
+async function loadStock(){
+  const search=(document.getElementById('stockSearch')?.value||'').toLowerCase();
+  try{
+    let res; if(databases.listRows) res=await databases.listRows(DB_ID,COL_PRODUCTS,[Appwrite.Query.limit(100),Appwrite.Query.orderDesc('$createdAt')]);
+    else res=await databases.listDocuments(DB_ID,COL_PRODUCTS,[Appwrite.Query.limit(100),Appwrite.Query.orderDesc('$createdAt')]);
+    allStock=res.rows||res.documents||[];
+  }catch{ document.getElementById('stockList').innerHTML=`<div style="font-size:11px;color:var(--muted)">Check Project ID / Collections</div>`; return }
+  const filtered=allStock.filter(p=>`${p.name} ${p.category} ${p.brand}`.toLowerCase().includes(search));
+  document.getElementById('stockCount').textContent=filtered.length;
+  document.getElementById('stockList').innerHTML=filtered.map(p=>`
+    <div style="display:flex;gap:10px;background:var(--bg);padding:10px;border-radius:12px;align-items:center">
+      <img src="${p.image}" style="width:48px;height:48px;object-fit:contain;background:#fff;border-radius:10px;border:1px solid var(--border)">
+      <div style="flex:1"><div style="font-size:12px;font-weight:700">${p.name}</div><div style="font-size:11px;color:var(--muted)">${p.category} • ${p.brand} • Stock: ${p.stock} • MK ${Number(p.price).toLocaleString()}</div></div>
+      <button onclick="deleteProduct('${p.$id}')" class="tap" style="height:30px;padding:0 10px;border-radius:8px;background:#FECACA;color:#EF4444;font-size:11px;font-weight:700">Delete</button>
+    </div>
+  `).join('');
+}
+async function deleteProduct(id){
+  if(!confirm('Delete this product?')) return;
+  try{ if(databases.deleteRow) await databases.deleteRow(DB_ID,COL_PRODUCTS,id); else await databases.deleteDocument(DB_ID,COL_PRODUCTS,id); showToast('Deleted'); loadStock(); loadHome();}catch(e){showToast(e.message)}
+}
+async function loadOrders(){
+  try{
+    let res; if(databases.listRows) res=await databases.listRows(DB_ID,COL_ORDERS,[Appwrite.Query.limit(50),Appwrite.Query.orderDesc('$createdAt')]);
+    else res=await databases.listDocuments(DB_ID,COL_ORDERS,[Appwrite.Query.limit(50),Appwrite.Query.orderDesc('$createdAt')]);
+    const docs=res.rows||res.documents||[];
+    document.getElementById('ordersList').innerHTML=docs.map(o=>`
+      <div style="background:var(--bg);padding:10px;border-radius:12px;display:grid;gap:6px">
+        <div style="display:flex;justify-content:space-between"><b style="font-size:12px">${o.orderId}</b><select onchange="updateStatus('${o.$id}',this.value)" style="height:30px;border-radius:8px;border:1px solid var(--border);font-size:11px;padding:0 8px"><option ${o.status==='Pending'?'selected':''}>Pending</option><option ${o.status==='Confirmed'?'selected':''}>Confirmed</option><option ${o.status==='Packed'?'selected':''}>Packed</option><option ${o.status==='On the way'?'selected':''}>On the way</option><option ${o.status==='Delivered'?'selected':''}>Delivered</option></select></div>
+        <div style="font-size:11px;color:var(--muted)">${o.customerName} • ${o.customerPhone} • ${o.area} • ${o.paymentMethod} ${o.paymentProof? '• '+o.paymentProof:''} • MK ${Number(o.total).toLocaleString()}</div>
+      </div>
+    `).join('')||'<div>No orders</div>';
+  }catch(e){ document.getElementById('ordersList').innerHTML='Error loading orders: '+e.message; }
+}
+async function updateStatus(docId,status){
+  try{ if(databases.updateRow) await databases.updateRow(DB_ID,COL_ORDERS,docId,{status}); else await databases.updateDocument(DB_ID,COL_ORDERS,docId,{status}); showToast('✅ Status → '+status);}catch(e){showToast(e.message)}
+}
+function saveSettings(){ localStorage.setItem('eh_set_airtel',document.getElementById('setAirtel').value); localStorage.setItem('eh_set_tnm',document.getElementById('setTnm').value); localStorage.setItem('eh_set_delivery',document.getElementById('setDelivery').value); localStorage.setItem('eh_set_wa',document.getElementById('setWa').value); showToast('✅ Settings saved'); }
+function loadSettings(){ document.getElementById('setAirtel').value=localStorage.getItem('eh_set_airtel')||''; document.getElementById('setTnm').value=localStorage.getItem('eh_set_tnm')||''; document.getElementById('setDelivery').value=localStorage.getItem('eh_set_delivery')||'5000'; document.getElementById('setWa').value=localStorage.getItem('eh_set_wa')||'265988226320'; }
+async function logout(){ try{await account.deleteSession('current');}catch{} localStorage.removeItem('eh_admin'); location.href='admin.html'; }
+guard().then(()=>{loadHome(); loadSettings();});
+</script>
+</body>
+</html>>>

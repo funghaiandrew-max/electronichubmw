@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cart — ElectroHub Malawi</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A8A4B">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+<style>
+:root{--green:#0A8A4B;--bg:#F6F7F9;--card:#fff;--border:#EEF1F4;--text:#121A26;--muted:#8A94A6}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
+button{font-family:inherit;border:none;background:none;cursor:pointer;touch-action:manipulation}
+.tap{transition:transform .15s,opacity .15s} .tap:active{transform:scale(.96)}
+.d-nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 5%;gap:20px}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.3px} .logo span{color:var(--green)}
+.d-links{display:flex;gap:8px;align-items:center} .d-links a{font-size:13px;font-weight:600;color:var(--muted);padding:8px 14px;border-radius:20px} .d-links a.active{background:var(--text);color:#fff}
+.wrap{flex:1;max-width:1000px;width:100%;margin:0 auto;padding:14px 14px 20px;display:flex;flex-direction:column}
+.m-col{max-width:480px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;gap:16px}
+.card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:14px}
+.item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)} .item:last-child{border:none}
+.item img{width:64px;height:64px;object-fit:contain;background:var(--bg);border-radius:12px;border:1px solid var(--border)}
+.item .info{flex:1} .item .name{font-size:12px;font-weight:700;line-height:1.3} .item .meta{font-size:11px;color:var(--muted);margin-top:2px}
+.qty{display:flex;align-items:center;gap:8px;margin-top:8px} .qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:#fff;display:grid;place-items:center}
+.summary{position:sticky;top:76px;height:fit-content}
+.summary .row{display:flex;justify-content:space-between;font-size:12px;padding:8px 0} .summary .row.total{font-weight:800;font-size:14px;border-top:1px solid var(--border);margin-top:6px;padding-top:12px}
+.btn{height:46px;border-radius:14px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px}
+.btn.green{background:var(--green);color:#fff} .btn.dark{background:var(--text);color:#fff} .btn.white{background:#fff;border:1px solid var(--border)}
+.m-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:40;display:grid;grid-template-columns:repeat(5,1fr);width:100%}
+.m-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:600;color:var(--muted);padding:4px} .m-nav a.active{color:var(--green)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:none;place-items:center;padding:14px} .modal.show{display:grid}
+.modal-box{background:#fff;border-radius:20px;padding:16px;width:100%;max-width:400px}
+.modal-box input,.modal-box select{width:100%;height:42px;border:1px solid var(--border);border-radius:12px;padding:0 12px;margin-top:8px;font-size:13px;background:#fff}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:600;z-index:99;display:none;white-space:nowrap}
+.footer{margin-top:auto;width:100vw;margin-left:calc(-50vw + 50%);background:#fff;border-top:1px solid var(--border);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted)}
+.footer a{color:var(--text);font-weight:600;text-decoration:none} .footer a.powered{color:var(--green);font-weight:800} .footer-links{display:flex;gap:16px;align-items:center}
+@media(max-width:1000px){.d-nav{display:none} .footer{display:none!important} .wrap{padding-bottom:90px} .summary{position:static}}
+@media(min-width:1001px){.m-col{max-width:100%;margin:0;display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start} .m-nav{display:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="d-nav">
+  <div class="logo">Electro<span>Hub</span> .MW</div>
+  <div class="d-links"><a href="index.html">Home</a><a href="shop.html">Shop</a><a class="active" href="cart.html">Cart</a><a href="track.html">Track</a><a href="admin.html">Admin</a></div>
+</nav>
+
+<div class="wrap">
+<div class="m-col">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="font-size:14px;font-weight:800;display:flex;gap:6px;align-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6h15l-1.5 9h-13z" fill="#121A26" opacity=".08" stroke="#121A26" stroke-width="1.2"/><circle cx="9" cy="20" r="1.5" fill="#121A26"/><circle cx="18" cy="20" r="1.5" fill="#121A26"/></svg> My Cart (<span id="cartCount">0</span>)</h3><button onclick="clearCart()" style="font-size:11px;color:#EF4444;font-weight:700" class="tap">Clear all</button></div>
+    <div id="cartItems" style="margin-top:8px"></div>
+    <div id="empty" style="display:none;text-align:center;padding:30px 10px">
+      <div style="width:64px;height:64px;border-radius:20px;background:var(--bg);border:1px solid var(--border);display:grid;place-items:center;margin:0 auto"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M6 6h15l-1.5 9h-13z" fill="#121A26" opacity=".12" stroke="#121A26" stroke-width="1.4"/><circle cx="9" cy="20" r="1.6" fill="#121A26"/><circle cx="18" cy="20" r="1.6" fill="#121A26"/></svg></div>
+      <div style="font-size:13px;font-weight:700;margin-top:12px">Cart is empty</div><div style="font-size:11px;color:var(--muted);margin-top:4px">Products from admin will appear here</div>
+      <button onclick="location.href='shop.html'" class="btn white tap" style="margin-top:14px">Go to Shop</button>
+    </div>
+  </div>
+
+  <div class="card summary">
+    <h4 style="font-size:13px;font-weight:800;display:flex;gap:6px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" fill="#0A8A4B" opacity=".15" stroke="#0A8A4B" stroke-width="1.2"/><path d="M2 9h20" stroke="#0A8A4B" stroke-width="1.2"/></svg> Order Summary</h4>
+    <div class="row"><span>Subtotal</span><span id="subtotal">MK 0</span></div>
+    <div class="row"><span>Delivery (Lilongwe)</span><span id="delivery">MK 5,000</span></div>
+    <div class="row"><span>Payment</span><span style="color:var(--green)">Airtel Money / TNM Mpamba</span></div>
+    <div class="row total"><span>Total</span><span id="total">MK 0</span></div>
+    <button class="btn green tap" onclick="location.href='checkout.html'">Checkout • Pay</button>
+    <button class="btn dark tap" onclick="orderWhatsAppAll()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5.5A8.5 8.5 0 0 1 21 11.5z" fill="#25D366" opacity=".3" stroke="#fff" stroke-width="1.2"/></svg> Order all via WhatsApp</button>
+    <div style="margin-top:10px;background:#E8F5E9;border-radius:12px;padding:10px;font-size:11px;line-height:1.4;display:flex;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#0A8A4B" opacity=".15" stroke="#0A8A4B" stroke-width="1.2"/><path d="M9 12l2 2 4-4" stroke="#0A8A4B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Secure Pay via Airtel Money / TNM Mpamba</b><br><span style="color:var(--muted)">Upload proof. Tracking: Pending → Packed → On the way → Delivered</span></div></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div>Powered by <a class="powered" href="https://lostloyalty.tech" target="_blank">lostloyaltytech</a></div>
+  <div class="footer-links"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><span>© 2026 ElectroHub</span></div>
+</footer>
+</div>
+
+<div class="m-nav">
+  <a href="index.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</a>
+  <a href="shop.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Shop</a>
+  <a class="active tap" href="cart.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-13z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>Cart</a>
+  <a href="track.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Track</a>
+  <a href="profile.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 20a8 8 0 1 0-16 0"/></svg>Profile</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+const APPWRITE_ENDPOINT="https://fra.cloud.appwrite.io/v1";
+const APPWRITE_PROJECT="electrohub";
+const DB_ID="electronic_db";
+const COL_PRODUCTS="products";
+const client=new Appwrite.Client().setEndpoint(APPWRITE_ENDPOINT).setProject(APPWRITE_PROJECT);
+
+let cartProducts=[];
+function showToast(m){const t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2500)}
+function getCartIds(){return JSON.parse(localStorage.getItem('eh_cart')||'[]')}
+function groupCart(ids){const map={}; ids.forEach(id=>{map[id]=(map[id]||0)+1}); return Object.entries(map).map(([id,qty])=>({id,qty}))}
+
+async function loadCart(){
+  const ids=getCartIds();
+  document.getElementById('cartCount').textContent=ids.length;
+  if(ids.length===0){document.getElementById('empty').style.display='block'; document.getElementById('cartItems').innerHTML=''; updateSummary(); return}
+  document.getElementById('empty').style.display='none';
+  const grouped=groupCart(ids);
+  const docs=[];
+  for(let g of grouped){
+    try{
+      let p;
+      try{ const tables=new Appwrite.TablesDB(client); p=await tables.getRow(DB_ID,COL_PRODUCTS,g.id); }
+      catch{ const db=new Appwrite.Databases(client); p=await db.getDocument(DB_ID,COL_PRODUCTS,g.id); }
+      docs.push({...p, qty:g.qty});
+    }catch(e){ console.log('skip',g.id,e) }
+  }
+  cartProducts=docs;
+  if(!cartProducts.length){
+    document.getElementById('cartItems').innerHTML=`<div style="padding:12px;font-size:12px;color:#EF4444;background:#fff;border:1px solid #FECACA;border-radius:12px">Can't load products. Fix: Appwrite Console → Settings → Platforms → Add * and Products → Permissions → Any Read</div>`;
+  }else{
+    renderCart();
+  }
+  updateSummary();
+}
+
+function renderCart(){
+  document.getElementById('cartItems').innerHTML=cartProducts.map(p=>`
+    <div class="item">
+      <img src="${p.image||'https://via.placeholder.com/200'}" class="tap" onclick="location.href='product.html?id=${p.$id}'">
+      <div class="info">
+        <div class="name">${p.name}</div>
+        <div class="meta">MK ${Number(p.price||0).toLocaleString()} • ${p.brand||''}</div>
+        <div class="qty">
+          <button class="tap" onclick="changeQty('${p.$id}',-1)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#121A26" stroke-width="2"><path d="M5 12h14"/></svg></button>
+          <div style="width:28px;height:28px;display:grid;place-items:center;font-weight:700;border:1px solid var(--border);border-radius:8px;font-size:12px">${p.qty}</div>
+          <button class="tap" onclick="changeQty('${p.$id}',1)"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#121A26" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button onclick="removeItem('${p.$id}')" style="margin-left:auto;font-size:11px;color:#EF4444;font-weight:600;display:flex;gap:4px;align-items:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><path d="M3 6h18M8 6V4h8v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>Remove</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function changeQty(id,d){let ids=getCartIds(); if(d>0) ids.push(id); else{ const idx=ids.indexOf(id); if(idx>-1) ids.splice(idx,1);} localStorage.setItem('eh_cart',JSON.stringify(ids)); loadCart();}
+function removeItem(id){localStorage.setItem('eh_cart',JSON.stringify(getCartIds().filter(i=>i!==id))); loadCart(); showToast('Removed')}
+function clearCart(){localStorage.setItem('eh_cart',JSON.stringify([])); loadCart(); showToast('Cart cleared')}
+function updateSummary(){
+  const total=cartProducts.reduce((s,p)=>s+Number(p.price||0)*p.qty,0);
+  const delivery= total>0?5000:0;
+  document.getElementById('subtotal').textContent=`MK ${total.toLocaleString()}`;
+  document.getElementById('delivery').textContent= total>0?`MK ${delivery.toLocaleString()}`:'MK 0';
+  document.getElementById('total').textContent=`MK ${(total+delivery).toLocaleString()}`;
+}
+function orderWhatsAppAll(){
+  if(cartProducts.length===0){showToast('Cart empty'); return}
+  const lines=cartProducts.map(p=>`• ${p.name} x${p.qty} — MK ${(Number(p.price||0)*p.qty).toLocaleString()}`).join('\n');
+  const total=cartProducts.reduce((s,p)=>s+Number(p.price||0)*p.qty,0)+5000;
+  const msg=`Hi ElectroHub, I want to order:\n${lines}\nTotal: MK ${total.toLocaleString()}\nDelivery: Lilongwe\nPayment: Airtel Money / TNM`;
+  window.open(`https://wa.me/265988226320?text=${encodeURIComponent(msg)}`,'_blank');
+}
+loadCart();
+</script>
+</body>
+</html>

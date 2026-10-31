@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Checkout — ElectroHub Malawi</title>
+<meta name="theme-color" content="#0A8A4B">
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+<style>
+:root{--green:#0A8A4B;--bg:#F6F7F9;--card:#fff;--border:#EEF1F4;--text:#121A26;--muted:#8A94A6}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
+button,input,select{font-family:inherit} button{border:none;background:none;cursor:pointer;touch-action:manipulation}
+.tap{transition:transform .15s,opacity .15s} .tap:active{transform:scale(.96)}
+.d-nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 5%;gap:20px}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.3px} .logo span{color:var(--green)}
+.d-links{display:flex;gap:8px;align-items:center} .d-links a{font-size:13px;font-weight:600;color:var(--muted);padding:8px 14px;border-radius:20px} .d-links a.active{background:var(--text);color:#fff}
+.wrap{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:14px 14px 20px;display:flex;flex-direction:column}
+.m-col{max-width:480px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:14px}
+.input{width:100%;height:44px;border:1px solid var(--border);border-radius:12px;padding:0 12px;margin-top:8px;font-size:13px;background:#fff}
+.input:focus{border-color:var(--green);outline:none;box-shadow:0 0 0 3px #E8F5E9}
+.pay-card{border:2px solid var(--border);border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center;margin-top:8px;cursor:pointer}
+.pay-card.active{border-color:var(--green);background:#E8F5E9}
+.btn{height:46px;border-radius:14px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.btn.green{background:var(--green);color:#fff} .btn.dark{background:var(--text);color:#fff}
+.m-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:40;display:grid;grid-template-columns:repeat(5,1fr);width:100%}
+.m-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:600;color:var(--muted);padding:4px} .m-nav a.active{color:var(--green)}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:600;z-index:99;display:none;white-space:nowrap}
+.footer{margin-top:auto;width:100vw;margin-left:calc(-50vw + 50%);background:#fff;border-top:1px solid var(--border);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted)}
+.footer a{color:var(--text);font-weight:600;text-decoration:none} .footer a.powered{color:var(--green);font-weight:800} .footer-links{display:flex;gap:16px;align-items:center}
+@media(max-width:1000px){.d-nav{display:none} .footer{display:none!important} .wrap{padding-bottom:90px}}
+@media(min-width:1001px){.m-col{max-width:700px} .m-nav{display:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="d-nav">
+  <div class="logo">Electro<span>Hub</span> .MW</div>
+  <div class="d-links"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="cart.html">Cart</a><a class="active" href="checkout.html">Checkout</a><a href="track.html">Track</a></div>
+</nav>
+
+<div class="wrap">
+<div class="m-col">
+  <div style="display:flex;align-items:center;gap:10px;padding:6px 0">
+    <button class="tap" onclick="history.back()" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:#fff;display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121A26" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
+    <h2 style="font-size:16px;font-weight:800">Checkout</h2><span id="count" style="font-size:11px;color:var(--muted)"></span>
+  </div>
+
+  <div class="card" id="cartList"><div style="font-size:12px;color:var(--muted)">Loading cart...</div></div>
+
+  <div class="card">
+    <h3 style="font-size:13px;font-weight:800;display:flex;gap:6px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" fill="#0A8A4B" opacity=".2" stroke="#0A8A4B" stroke-width="1.2"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7" stroke="#0A8A4B" stroke-width="1.2"/></svg> Customer Details</h3>
+    <input id="cName" class="input" placeholder="Full name">
+    <input id="cPhone" class="input" placeholder="Phone (099... / 088...)">
+    <select id="cArea" class="input"><option>Area 47</option><option>Area 25</option><option>Area 49</option><option>City Centre</option><option>Kanengo</option><option>Other Lilongwe</option></select>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:13px;font-weight:800;display:flex;gap:6px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" fill="#0A8A4B" opacity=".15" stroke="#0A8A4B" stroke-width="1.2"/><path d="M2 9h20" stroke="#0A8A4B" stroke-width="1.2"/></svg> Payment Method</h3>
+    
+    <div class="pay-card tap active" data-pay="Airtel Money" onclick="selectPay(this)">
+      <div style="width:40px;height:40px;border-radius:10px;background:#FF0000;opacity:.15;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="#FF0000" opacity=".8"/><path d="M12 8v8M8 12h8" stroke="#fff" stroke-width="1.5"/></svg></div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:700">Airtel Money</div><div style="font-size:10px;color:var(--muted)">099XXXXXXX • Send + proof</div></div>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="check"><circle cx="12" cy="12" r="8" fill="#0A8A4B" stroke="#0A8A4B"/><path d="M8 12l2.5 2.5L16 9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="pay-card tap" data-pay="TNM Mpamba" onclick="selectPay(this)">
+      <div style="width:40px;height:40px;border-radius:10px;background:#0052CC;opacity:.15;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="10" rx="2" fill="#0052CC"/><path d="M7 12h10" stroke="#fff" stroke-width="1.2"/></svg></div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:700">TNM Mpamba</div><div style="font-size:10px;color:var(--muted)">088XXXXXXX • Send + proof</div></div>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="check" style="display:none"><circle cx="12" cy="12" r="8" fill="#0A8A4B" stroke="#0A8A4B"/><path d="M8 12l2.5 2.5L16 9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="pay-card tap" data-pay="Cash on Delivery" onclick="selectPay(this)">
+      <div style="width:40px;height:40px;border-radius:10px;background:#121A26;opacity:.08;display:grid;place-items:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" fill="#121A26" opacity=".15" stroke="#121A26" stroke-width="1.2"/><path d="M2 9h20" stroke="#121A26" stroke-width="1.2"/></svg></div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:700">Cash on Delivery</div><div style="font-size:10px;color:var(--muted)">Pay when delivered — Lilongwe</div></div>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="check" style="display:none"><circle cx="12" cy="12" r="8" fill="#0A8A4B" stroke="#0A8A4B"/><path d="M8 12l2.5 2.5L16 9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <input id="cProof" class="input" placeholder="Txn ID / Payment proof (e.g. AIR123...)">
+    <div style="margin-top:8px;font-size:10px;color:var(--muted);display:flex;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#0A8A4B" opacity=".15" stroke="#0A8A4B" stroke-width="1.2"/></svg> Your order will be confirmed after payment verification. Track live.</div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;font-size:12px"><span>Subtotal</span><span id="sub" style="font-weight:700">MK 0</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:6px"><span>Delivery</span><span id="del" style="font-weight:700">MK 5,000</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:800;margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)"><span>Total</span><span id="tot">MK 0</span></div>
+    <button class="btn green tap" style="margin-top:12px" onclick="placeOrder()" id="orderBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Place Order — <span id="btnTot">MK 0</span></button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div>Powered by <a class="powered" href="https://lostloyalty.tech" target="_blank">lostloyaltytech</a></div>
+  <div class="footer-links"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><span>© 2026 ElectroHub</span></div>
+</footer>
+</div>
+
+<div class="m-nav">
+  <a href="index.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</a>
+  <a href="shop.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Shop</a>
+  <a href="cart.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-13z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>Cart</a>
+  <a href="track.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Track</a>
+  <a href="profile.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 20a8 8 0 1 0-16 0"/></svg>Profile</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const APPWRITE_ENDPOINT="https://fra.cloud.appwrite.io/v1";
+const APPWRITE_PROJECT="electrohub";
+const DB_ID="electronic_db";
+const COL_PRODUCTS="products";
+const COL_ORDERS="orders";
+const client=new Appwrite.Client().setEndpoint(APPWRITE_ENDPOINT).setProject(APPWRITE_PROJECT);
+const databases=client.tablesDB ? new Appwrite.TablesDB(client) : new Appwrite.Databases(client);
+let selectedPay="Airtel Money";
+let cartProducts=[];
+function showToast(m){const t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',3000)}
+
+function selectPay(el){
+  document.querySelectorAll('.pay-card').forEach(c=>{c.classList.remove('active'); c.querySelector('.check').style.display='none'});
+  el.classList.add('active'); el.querySelector('.check').style.display='block';
+  selectedPay=el.dataset.pay;
+}
+
+async function loadCart(){
+  let ids=JSON.parse(localStorage.getItem('eh_cart')||'[]');
+  if(!ids.length){document.getElementById('cartList').innerHTML=`<div style="text-align:center;padding:12px;font-size:12px;color:var(--muted)">Cart empty • <a href="shop.html" style="color:var(--green);font-weight:700">Shop now →</a></div>`; updateTotals(); return}
+  // count qty
+  const counts={}; ids.forEach(id=>counts[id]=(counts[id]||0)+1);
+  const uniqueIds=[...new Set(ids)];
+  try{
+    let docs=[];
+    for(let id of uniqueIds){
+      try{
+        let p; 
+        try{ const tables=new Appwrite.TablesDB(client); p=await tables.getRow(DB_ID,COL_PRODUCTS,id); }
+        catch{ const db=new Appwrite.Databases(client); p=await db.getDocument(DB_ID,COL_PRODUCTS,id); }
+        docs.push({...p, qty:counts[id]});
+      }catch(e){ console.log('skip',id) }
+    }
+    cartProducts=docs;
+  }catch(e){ cartProducts=[]; }
+  document.getElementById('count').textContent=`${ids.length} items`;
+  document.getElementById('cartList').innerHTML=cartProducts.map(p=>`
+    <div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+      <img src="${p.image}" style="width:48px;height:48px;object-fit:contain;background:#fff;border:1px solid var(--border);border-radius:10px">
+      <div style="flex:1"><div style="font-size:12px;font-weight:700">${p.name}</div><div style="font-size:11px;color:var(--muted)">Qty ${p.qty} • MK ${Number(p.price).toLocaleString()}</div></div>
+      <div style="font-size:12px;font-weight:800">MK ${(p.price*p.qty).toLocaleString()}</div>
+    </div>
+  `).join('') || `<div>Error loading</div>`;
+  updateTotals();
+}
+
+function updateTotals(){
+  const sub=cartProducts.reduce((s,p)=>s+p.price*p.qty,0);
+  const del=sub>0?5000:0;
+  const tot=sub+del;
+  document.getElementById('sub').textContent='MK '+sub.toLocaleString();
+  document.getElementById('del').textContent='MK '+del.toLocaleString();
+  document.getElementById('tot').textContent='MK '+tot.toLocaleString();
+  document.getElementById('btnTot').textContent='MK '+tot.toLocaleString();
+}
+
+async function placeOrder(){
+  const name=document.getElementById('cName').value.trim();
+  const phone=document.getElementById('cPhone').value.trim();
+  const area=document.getElementById('cArea').value;
+  const proof=document.getElementById('cProof').value.trim();
+  if(!name||!phone){showToast('Enter name & phone'); return}
+  if(cartProducts.length===0){showToast('Cart empty'); return}
+  const btn=document.getElementById('orderBtn'); btn.textContent='Placing...'; btn.disabled=true;
+
+  const sub=cartProducts.reduce((s,p)=>s+p.price*p.qty,0);
+  const tot=sub+5000;
+  const orderId="EH-"+Math.floor(1000+Math.random()*9000);
+
+  // For simplicity create one order per cart with product list
+  const data={
+    orderId,
+    productId: cartProducts[0].$id,
+    productName: cartProducts.map(p=>`${p.name} x${p.qty}`).join(', '),
+    qty: cartProducts.reduce((s,p)=>s+p.qty,0),
+    total: tot,
+    customerName: name,
+    customerPhone: phone,
+    area,
+    paymentMethod: selectedPay,
+    paymentProof: proof,
+    status: 'Pending',
+    createdAt: new Date().toISOString()
+  };
+
+  try{
+    try{ const tables=new Appwrite.TablesDB(client); await tables.createRow(DB_ID,COL_ORDERS, Appwrite.ID.unique(), data); }
+    catch{ const db=new Appwrite.Databases(client); await db.createDocument(DB_ID,COL_ORDERS, Appwrite.ID.unique(), data); }
+    localStorage.removeItem('eh_cart');
+    showToast(`✅ Order ${orderId} placed!`);
+    setTimeout(()=>location.href=`track.html?id=${orderId}`,1200);
+  }catch(e){
+    showToast('Failed: '+e.message);
+    console.error(e);
+  }finally{ btn.disabled=false; btn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Place Order — MK ${tot.toLocaleString()}`; }
+}
+
+loadCart();
+</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Product — ElectroHub Malawi</title>
+<meta name="description" content="Buy original electronics in Lilongwe Malawi. iPhone, Samsung, Laptops, Audio, PS5. Airtel Money & TNM Mpamba. 2hrs delivery Area 47.">
+<link rel="canonical" href="https://electrohub.mw/product.html">
+<meta name="theme-color" content="#0A8A4B">
+<meta property="og:type" content="product">
+<meta property="og:title" content="ElectroHub Malawi - Original Electronics">
+<meta property="og:description" content="Best electronics shop in Lilongwe, Area 47. Phones, Laptops, Audio, Gaming.">
+<meta property="og:image" content="https://electrohub.mw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/appwrite@15.0.0"></script>
+<style>
+:root{--green:#0A8A4B;--bg:#F6F7F9;--card:#fff;--border:#EEF1F4;--text:#121A26;--muted:#8A94A6}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh}
+button{font-family:inherit;border:none;background:none;cursor:pointer;touch-action:manipulation}
+.tap{transition:transform .15s,opacity .15s} .tap:active{transform:scale(.96)}
+.d-nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 5%;gap:20px}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.3px} .logo span{color:var(--green)}
+.d-links{display:flex;gap:8px;align-items:center} .d-links a{font-size:13px;font-weight:600;color:var(--muted);padding:8px 14px;border-radius:20px} .d-links a.active{background:var(--text);color:#fff}
+.wrap{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:14px 14px 20px;display:flex;flex-direction:column}
+.m-col{max-width:480px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;gap:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:14px}
+.gallery img{width:100%;height:300px;object-fit:contain;background:#fff;border-radius:16px;border:1px solid var(--border)}
+.thumbs{display:flex;gap:8px;overflow-x:auto;margin-top:10px} .thumbs::-webkit-scrollbar{display:none}
+.thumbs img{width:56px;height:56px;object-fit:contain;border-radius:12px;border:1px solid var(--border);flex-shrink:0} .thumbs img.active{border-color:var(--green);box-shadow:0 0 0 2px #E8F5E9}
+.price{font-size:22px;font-weight:800}
+.badge{display:inline-flex;height:26px;padding:0 10px;border-radius:20px;background:#E8F5E9;color:var(--green);font-size:11px;font-weight:700;align-items:center;gap:6px}
+.specs{display:grid;gap:8px;margin-top:12px} .spec{display:flex;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:12px;font-size:12px} .spec b{font-weight:700}
+.qty{display:flex;align-items:center;gap:12px;margin-top:14px} .qty button{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:#fff;font-weight:800}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.btn{height:46px;border-radius:14px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+.btn.green{background:var(--green);color:#fff} .btn.dark{background:var(--text);color:#fff} .btn.white{background:#fff;border:1px solid var(--border)}
+.m-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:40;display:grid;grid-template-columns:repeat(5,1fr);width:100%}
+.m-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:600;color:var(--muted);padding:4px} .m-nav a.active{color:var(--green)}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:600;z-index:99;display:none;white-space:nowrap}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;display:none;place-items:center;padding:14px} .modal.show{display:grid}
+.modal-box{background:#fff;border-radius:20px;padding:16px;width:100%;max-width:400px}
+.modal-box input,.modal-box select{width:100%;height:42px;border:1px solid var(--border);border-radius:12px;padding:0 12px;margin-top:8px;font-size:13px;background:#fff}
+.footer{margin-top:auto;width:100vw;margin-left:calc(-50vw + 50%);background:#fff;border-top:1px solid var(--border);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted)}
+.footer a{color:var(--text);font-weight:600;text-decoration:none} .footer a.powered{color:var(--green);font-weight:800} .footer-links{display:flex;gap:16px;align-items:center}
+@media(max-width:1000px){.d-nav{display:none} .footer{display:none!important} .wrap{padding-bottom:90px}}
+@media(min-width:1001px){.m-col{max-width:100%;margin:0;display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start} .m-nav{display:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="d-nav">
+  <div class="logo">Electro<span>Hub</span> .MW</div>
+  <div class="d-links"><a href="index.html">Home</a><a href="shop.html">Shop</a><a class="active" href="#">Product</a><a href="track.html">Track</a><a href="profile.html">Profile</a></div>
+</nav>
+
+<div class="wrap">
+<div class="m-col">
+  <div class="card gallery">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <button class="tap" onclick="history.back()" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#121A26" stroke-width="1.8"><path d="m15 18-6-6 6-6" stroke-linecap="round"/></svg></button>
+      <div class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" fill="#0A8A4B" opacity=".18" stroke="#0A8A4B" stroke-width="1.2"/><path d="M4 20c0-4.2 3.6-7.2 8-7.2s8 3 8 7.2" fill="#0A8A4B" opacity=".12" stroke="#0A8A4B" stroke-width="1.2" stroke-linecap="round"/></svg><span id="stockBadge">Checking stock...</span></div>
+    </div>
+    <img id="mainImg" src="" alt="Product image ElectroHub Malawi" loading="lazy">
+    <div class="thumbs" id="thumbs"></div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:start;gap:10px">
+      <div><div style="font-size:11px;color:var(--muted);font-weight:600" id="brandCat">Loading...</div><h1 id="pName" style="font-size:18px;font-weight:800;margin-top:4px;line-height:1.25">Loading...</h1></div>
+      <button class="tap" onclick="shareProduct()" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);display:grid;place-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121A26" stroke-width="1.4"><circle cx="18" cy="5" r="2.3" fill="#121A26" opacity=".12" stroke="#121A26"/><circle cx="6" cy="12" r="2.3" fill="#121A26" opacity=".12" stroke="#121A26"/><circle cx="18" cy="19" r="2.3" fill="#121A26" opacity=".12" stroke="#121A26"/><path d="M8.3 10.8 15.7 6.2M15.7 17.8 8.3 13.2" stroke-linecap="round"/></svg></button>
+    </div>
+
+    <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+      <div class="price" id="price">MK 0</div>
+      <div style="font-size:11px;color:var(--muted);font-weight:600" id="stockInfo"></div>
+    </div>
+
+    <div class="specs" id="specs"></div>
+
+    <div class="qty"><span style="font-size:12px;font-weight:600">Quantity</span><div style="display:flex;gap:8px;margin-left:auto"><button class="tap" onclick="changeQty(-1)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#121A26" stroke-width="2"><path d="M5 12h14" stroke-linecap="round"/></svg></button><div id="qty" style="width:36px;height:36px;display:grid;place-items:center;font-weight:700;border:1px solid var(--border);border-radius:10px">1</div><button class="tap" onclick="changeQty(1)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#121A26" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></button></div></div>
+
+    <div class="actions">
+      <button class="btn white tap" onclick="addToCart()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6h15l-1.5 9h-13z" fill="#121A26" opacity=".08" stroke="#121A26" stroke-width="1.2"/><circle cx="9" cy="20" r="1.4" fill="#121A26"/><circle cx="18" cy="20" r="1.4" fill="#121A26"/></svg> Add to Cart</button>
+      <button class="btn green tap" onclick="openCheckout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" stroke-linecap="round"/><path d="M3 6h18" stroke-linecap="round"/><path d="M16 10a4 4 0 0 1-8 0" stroke-linecap="round"/></svg> Buy Now</button>
+    </div>
+    <button class="btn dark tap" style="margin-top:10px" onclick="orderWhatsApp()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5.5A8.5 8.5 0 0 1 21 11.5z" fill="#25D366" opacity=".18" stroke="#121A26" stroke-width="1.2"/></svg> Order via WhatsApp</button>
+
+    <div style="margin-top:12px;background:#F6F7F9;border-radius:12px;padding:10px;display:flex;gap:8px;align-items:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#0A8A4B" opacity=".14" stroke="#0A8A4B" stroke-width="1.2"/></svg><div style="font-size:11px;line-height:1.4"><b>Airtel Money & TNM Mpamba • Track Order</b><br><span style="color:var(--muted)">Pay with proof • 2hrs Lilongwe • 1yr warranty</span></div></div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.5" id="desc"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div>Powered by <a class="powered" href="https://lostloyalty.tech" target="_blank">lostloyaltytech</a></div>
+  <div class="footer-links"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><span>© 2026 ElectroHub</span></div>
+</footer>
+</div>
+
+<div class="modal" id="checkoutModal">
+  <div class="modal-box">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="font-size:14px;font-weight:800">Checkout — <span id="modalName"></span></h3><button onclick="closeCheckout()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#121A26" stroke-width="2"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/></svg></button></div>
+    <input id="cName" placeholder="Full name" autocomplete="name"><input id="cPhone" placeholder="Phone (Airtel/TNM)" autocomplete="tel">
+    <select id="cArea"><option>Area 47</option><option>Area 25</option><option>Area 49</option><option>City Centre</option><option>Kanengo</option><option>Other Lilongwe</option></select>
+    <select id="cPay"><option value="Airtel Money">Airtel Money</option><option value="TNM Mpamba">TNM Mpamba</option><option value="Cash on Delivery">Cash on Delivery</option></select>
+    <input id="cProof" placeholder="Payment proof / Txn ID (optional)">
+    <button onclick="placeOrder()" class="tap" style="margin-top:12px;width:100%;height:44px;background:var(--green);color:#fff;border-radius:12px;font-weight:700">Place Order • <span id="modalPrice">MK 0</span></button>
+  </div>
+</div>
+
+<div class="m-nav">
+  <a href="index.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9 12 2l9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linecap="round"/></svg>Home</a>
+  <a href="shop.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Shop</a>
+  <a href="categories.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="5"/><path d="m21 21-3.5-3.5" stroke-linecap="round"/></svg>Categories</a>
+  <a href="track.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>Track</a>
+  <a href="profile.html" class="tap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M20 20a8 8 0 1 0-16 0" stroke-linecap="round"/></svg>Profile</a>
+</div>
+
+<div class="toast" id="toast"></div>
+<script type="application/ld+json" id="seoSchema"></script>
+
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+const APPWRITE_ENDPOINT="https://fra.cloud.appwrite.io/v1";
+const APPWRITE_PROJECT="electrohub";
+const DB_ID="electronic_db";
+const COL_PRODUCTS="products";
+const COL_ORDERS="orders";
+const client=new Appwrite.Client().setEndpoint(APPWRITE_ENDPOINT).setProject(APPWRITE_PROJECT);
+let product=null; let qty=1;
+function showToast(m){const t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2500)}
+function getId(){return new URLSearchParams(location.search).get('id')}
+
+async function load(){
+  const id=getId(); if(!id){showToast('No product ID'); return}
+  try{
+    let res;
+    try{ const tables=new Appwrite.TablesDB(client); res=await tables.getRow(DB_ID,COL_PRODUCTS,id); }
+    catch{ const db=new Appwrite.Databases(client); res=await db.getDocument(DB_ID,COL_PRODUCTS,id); }
+    product=res; render(); injectSEO();
+  }catch(e){
+    document.getElementById('pName').textContent='Product not found — Add Platforms *.electrohub.mw in Appwrite';
+    console.error(e);
+  }
+}
+
+function render(){
+  document.getElementById('mainImg').src=product.image||"";
+  document.getElementById('pName').textContent=product.name||"Product";
+  document.getElementById('brandCat').textContent=`${product.brand||'ElectroHub'} • ${product.category||'Electronics'}`;
+  document.getElementById('price').textContent=`MK ${Number(product.price||0).toLocaleString()}`;
+  document.getElementById('stockInfo').textContent=`${product.stock??0} in stock`;
+  document.getElementById('stockBadge').textContent=`${product.stock??0} in stock • ${product.brand||'Original'}`;
+  document.getElementById('modalName').textContent=product.name||""; 
+  document.getElementById('modalPrice').textContent=`MK ${Number(product.price||0).toLocaleString()}`;
+  const thumbs=[product.image||"", ...(product.images||[])].filter(Boolean).slice(0,4);
+  document.getElementById('thumbs').innerHTML=thumbs.map((src,i)=>`<img class="${i===0?'active':''} tap" src="${src}" onclick="setMain('${src}',this)">`).join('');
+  const specs={ Brand:product.brand||'Original', Category:product.category||'Electronics', Stock:`${product.stock??0} units`, Warranty:'1 Year Official', Location:'Area 47, Lilongwe' };
+  document.getElementById('specs').innerHTML=Object.entries(specs).map(([k,v])=>`<div class="spec"><b>${k}</b><span>${v}</span></div>`).join('');
+  document.getElementById('desc').textContent=product.description||`${product.name} - Original product available at ElectroHub Malawi, Area 47 Lilongwe. Fast delivery, Airtel Money / TNM Mpamba.`;
+}
+
+function injectSEO(){
+  document.title=`${product.name} — MK ${Number(product.price||0).toLocaleString()} | ElectroHub Malawi`;
+  const meta=document.querySelector('meta[name="description"]'); if(meta) meta.content=`Buy ${product.name} in Lilongwe. ${product.brand||''} ${product.category||''} - MK ${product.price}. Area 47. Airtel Money & TNM Mpamba. 2hrs delivery.`;
+  const schema={
+    "@context":"https://schema.org","@type":"Product",
+    "name": product.name,
+    "image": product.image,
+    "description": product.description||product.name,
+    "brand":{"@type":"Brand","name":product.brand||"ElectroHub"},
+    "category":product.category||"Electronics",
+    "offers":{"@type":"Offer","price":product.price,"priceCurrency":"MWK","availability": product.stock>0?"https://schema.org/InStock":"https://schema.org/OutOfStock","seller":{"@type":"Organization","name":"ElectroHub Malawi"},"areaServed":"Lilongwe, Malawi"}
+  };
+  document.getElementById('seoSchema').textContent=JSON.stringify(schema);
+}
+
+function setMain(src,el){document.getElementById('mainImg').src=src; document.querySelectorAll('.thumbs img').forEach(i=>i.classList.remove('active')); if(el) el.classList.add('active')}
+function changeQty(d){qty=Math.max(1,Math.min(product.stock||99, qty+d)); document.getElementById('qty').textContent=qty; document.getElementById('modalPrice').textContent=`MK ${(Number(product.price||0)*qty).toLocaleString()}`}
+function addToCart(){let c=JSON.parse(localStorage.getItem('eh_cart')||'[]'); for(let i=0;i<qty;i++) c.push(product.$id); localStorage.setItem('eh_cart',JSON.stringify(c)); showToast(`${qty} × Added to cart`)}
+function orderWhatsApp(){const msg=`Hi ElectroHub, I want to order:\n*${product.name}*\nBrand: ${product.brand||''}\nPrice: MK ${Number(product.price).toLocaleString()}\nQty: ${qty}\nID: ${product.$id}\nLink: ${location.href}`; window.open(`https://wa.me/265988226320?text=${encodeURIComponent(msg)}`,'_blank');}
+function shareProduct(){if(navigator.share){navigator.share({title:product.name, text:`Check ${product.name} — MK ${product.price}`, url:location.href})}else{navigator.clipboard.writeText(location.href); showToast('Link copied')}}
+function openCheckout(){document.getElementById('checkoutModal').classList.add('show')} 
+function closeCheckout(){document.getElementById('checkoutModal').classList.remove('show')}
+async function placeOrder(){
+  const name=document.getElementById('cName').value.trim(); const phone=document.getElementById('cPhone').value.trim();
+  const area=document.getElementById('cArea').value; const pay=document.getElementById('cPay').value; const proof=document.getElementById('cProof').value.trim();
+  if(!name||!phone){showToast('Enter name & phone'); return}
+  const orderId="EH-"+Math.floor(1000+Math.random()*9000);
+  const data={ orderId, productId:product.$id, productName:product.name, qty, total: Number(product.price||0)*qty, customerName:name, customerPhone:phone, area, paymentMethod:pay, paymentProof:proof, status:'Pending', createdAt:new Date().toISOString() };
+  try{
+    try{ const tables=new Appwrite.TablesDB(client); await tables.createRow(DB_ID,COL_ORDERS, Appwrite.ID.unique(), data); }
+    catch{ const db=new Appwrite.Databases(client); await db.createDocument(DB_ID,COL_ORDERS, Appwrite.ID.unique(), data); }
+  }catch(e){ console.error(e); showToast('Order failed: '+e.message); return; }
+  showToast(`Order ${orderId} placed!`); closeCheckout(); setTimeout(()=>location.href=`track.html?id=${orderId}`,1200);
+}
+load();
+</script>
+</body>
+</html>
